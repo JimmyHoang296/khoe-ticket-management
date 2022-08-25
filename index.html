@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>ticket Khỏe massage</title>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="./style.css">
+</head>
+
+<body>
+    <div class="wrapper">
+        <header class="header">
+            <img src="https://sp-ao.shortpixel.ai/client/to_webp,q_glossy,ret_img,w_350,h_132/https://khoemassage.com/wp-content/uploads/2021/07/logo.jpg"
+                alt="" class="logo" />
+
+            <div class="page-selector hidden">
+                <button class="search-ticket-selector">Tìm ticket</button>
+                <button class="create-ticket-selector">Tạo ticket</button>
+            </div>
+        </header>
+
+        <!-- login -->
+        <div class="login-page  ">
+            <form class="login-form">
+                <input type="text" placeholder="username" id="user-name"/>
+                <input type="password" placeholder="password" id = "password"/>
+                <button id="login">login</button>
+                <p class="danger hidden"></p>
+                <p class="waiting hidden">Đang lấy dữ liệu</p>
+            </form>
+        </div>
+        <!-- search ticket -->
+        <div class="search-ticket section hidden ">
+            <form class="search-form" onsubmit = "return handleSearchticket()">
+                <div>
+                    <input type="text" id = "searchPhone" placeholder="Nhập số ĐT KH" />
+                    <input type="text" id = "searchName" placeholder="Nhập tên KH" />
+                    <input type="text" id = "searchTicketID" placeholder="Nhập mã ticket" />
+                    <button>Tìm kiếm</button>
+                </div>
+                <div class = "option">
+                    <input type="checkbox" id = "isSingleTicket">
+                    <label for="isSingleTicket">Tìm ticket lẻ</label>
+                    <input type="checkbox" id = "isOD">
+                    <label for="isOD">Tìm ticket đã hết hạn</label>
+                </div>
+            </form>
+            <div class="search-result"></div>
+        </div>
+        <!-- end of search ticket -->
+
+        <!-- start use ticket -->
+        <div class="use-ticket-value hidden">
+            <form  onsubmit = "return handleSubmitChange(e)">
+                <input type="text" id="usedValue" class="use-value" placeholder="Giá trị sử dụng">
+                <input type="text" id="note" class="use-value" placeholder="Ghi chú nếu có">
+                <div>
+                    <button class="submit">Sử dụng</button>
+                    <button class="cancel">Bỏ qua</button>
+                </div>
+                <p class="danger hidden">Nhập đúng số</p>
+            </form>
+        </div>
+        <!-- end use ticket -->
+
+        <!-- create ticket -->
+        <div class="create-ticket section hidden " >
+            <form action="" class="ticket-infor-form">
+                <div class = "option">
+                    <input type="checkbox" id = "isCreateSingleTicket">
+                    <label for="isCreateSingleTicket">Tạo ticket lẻ</label>
+                </div>
+                <div class="ticket-id-start hidden">
+                    <label for="ticket-id-start">Mã ticket bắt đầu: </label>
+                    <input id="ticket-id-start" value="" />
+                </div>
+                <div class="ticket-id-end hidden">
+                    <label for="ticket-id-end">Mã ticket kết thúc: </label>
+                    <input id="ticket-id-end" value="" />
+                </div>
+                <div class="ticket-id">
+                    <label for="ticket-id">Mã ticket: </label>
+                    <input id="ticket-id" value="" />
+                </div>
+                <div class="ticket-owner">
+                    <label for="ticket-owner">Họ tên khách hàng: </label>
+                    <input id="ticket-owner" value="" />
+                </div>
+                <div class="phone-number">
+                    <label for="phone-number">Số điện thoại: </label>
+                    <input id="phone-number" value="" />
+                </div>
+                <div class="ticket-value">
+                    <label for="ticket-value">Giá trị ticket: </label>
+                    <input id="ticket-value" value="" />
+                </div>
+                <div class="ticket-date">
+                    <label for="ticket-date">Hạn ticket: </label>
+                    <input id="ticket-date" value="" placeholder="dd/mm/yyyy"/>
+                </div>
+                <button class="" id="create-ticket">Tạo ticket</button>
+                <p class="danger hidden">Nhập đúng số</p>
+                
+            </form>
+        </div>
+        <!-- end of create ticket -->
+
+    </div>
+    <div class="modal hidden"></div>
+    <script src="script.js"></script>
+</body>
+
+</html>
