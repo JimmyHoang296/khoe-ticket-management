@@ -96,11 +96,14 @@ loginBtn.addEventListener("click", (e) => {
     })
     .then((data) => {
       waitingComponent.classList.add("hidden");
+      loginBtn.disabled = false
       handleLogin(data);
     })
     .catch((error) => {
       console.error("Error:", error);
       alert("Cập nhật không thành công, hãy thử lại");
+      loginBtn.disabled = false
+
     });
 });
 
