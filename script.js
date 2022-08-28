@@ -6,7 +6,7 @@ var IS_LOG_IN;
 var DATA;
 var TICKET = {};
 const URL =
-  "https://script.google.com/macros/s/AKfycbxa-1E8v3Zg3nAXzrEfODQQU64ZaVIW6IdRrISFn0q4T7HlglFedDsayAu_4JH2-8haFg/exec";
+  "https://script.google.com/macros/s/AKfycbwo3JZBJBlSTAh6rW1nwZAA4gYxVQfkO8VxZHHuIH7_mhgJOjXvbrKINFgrNEwPicFx_Q/exec";
 
 ///////////////////////
 ///// nav function ////
