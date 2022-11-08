@@ -5,8 +5,7 @@ var SITE;
 var IS_LOG_IN;
 var DATA;
 var TICKET = {};
-const URL =
-  "https://script.google.com/macros/s/AKfycbw0h90kfVVxD3mp_7fkMPqbiJnXdSL4K5SJLt-OLXolGfOvTosJoynLUQOkSE6qCQIpvw/exec";
+const URL = "https://script.google.com/macros/s/AKfycbzUI2QjcvofyxkXT3uBCcm4b9AjSahRU9Iu8wWfy3LvwZGqnenZPvxFCiXzpWGCE95RLw/exec"
 
 ///////////////////////
 ///// nav function ////
@@ -47,21 +46,29 @@ createTicketSelector.addEventListener("click", () => {
 ///////////////////////
 /// login function ///
 //////////////////////
+const showEle = (element) => {
+  element.classList.remove("hidden");
+};
+const hiddenEle = (element) => {
+  element.classList.add("hidden");
+};
+const modalEle = document.querySelector('.modal')
 
 const navList = document.querySelector(".page-selector");
 const loginPage = document.querySelector(".login-page");
 const userNameInput = document.querySelector("#user-name");
 const passwordInput = document.querySelector("#password");
+const siteInput = document.querySelector("#user-site");
 
 const loginBtn = document.querySelector("#login");
 const waitingComponent = document.querySelector(".waiting");
 const dangerComponent = document.querySelector(".danger");
 
 userNameInput.addEventListener("input", () => {
-  dangerComponent.classList.add("hidden");
+  hiddenEle(dangerComponent)
 });
 passwordInput.addEventListener("input", () => {
-  dangerComponent.classList.add("hidden");
+  hiddenEle(dangerComponent);
 });
 
 loginBtn.addEventListener("click", (e) => {
@@ -70,10 +77,10 @@ loginBtn.addEventListener("click", (e) => {
   // check blank input
   if (!userNameInput.value || !passwordInput.value) {
     dangerComponent.innerHTML = "Nhập đầy đủ username và password";
-    dangerComponent.classList.remove("hidden");
+    showEle(dangerComponent);
     return;
   }
-  waitingComponent.classList.remove("hidden");
+  showEle(modalEle)
   loginBtn.disabled = true
   // send request
   let submitData = {
@@ -81,6 +88,7 @@ loginBtn.addEventListener("click", (e) => {
     data: {
       user: userNameInput.value,
       password: passwordInput.value,
+      site: siteInput.value
     },
   };
 
@@ -95,7 +103,7 @@ loginBtn.addEventListener("click", (e) => {
       return response.json();
     })
     .then((data) => {
-      waitingComponent.classList.add("hidden");
+      hiddenEle(modalEle)
       loginBtn.disabled = false
       handleLogin(data);
     })
@@ -103,6 +111,7 @@ loginBtn.addEventListener("click", (e) => {
       console.error("Error:", error);
       alert("Cập nhật không thành công, hãy thử lại");
       loginBtn.disabled = false
+      hiddenEle(modalEle)
 
     });
 });
@@ -110,7 +119,7 @@ loginBtn.addEventListener("click", (e) => {
 const handleLogin = (response) => {
   if (response.status === false) {
     dangerComponent.innerHTML = "Tên đăng nhập hoặc mật khẩu sai";
-    dangerComponent.classList.remove("hidden");
+    showEle(dangerComponent)
     return;
   }
 
@@ -121,7 +130,7 @@ const handleLogin = (response) => {
   IS_LOG_IN = true;
   DATA = response.data;
   SITE = response.user.site;
-
+  document.querySelector('.siteName').innerHTML = `Cơ sở ${SITE}`
   loginPage.classList.add("hidden");
   navList.classList.remove("hidden");
 
@@ -247,7 +256,7 @@ const handleSearchTicket = () => {
   useBtns.forEach((btn) => {
     btn.addEventListener("click", (e) => {
       e.preventDefault();
-      modal.classList.remove("hidden");
+      showEle(modal)
       TICKET.ID = btn.getAttribute("ticketID");
       TICKET.REMAIN = btn.getAttribute("ticketRemain");
     });
@@ -377,7 +386,7 @@ cancelBtn.addEventListener("click", (e) => {
 const valueEle = document.querySelector(".use-ticket-value input");
 valueEle.addEventListener("input", () => {
   const cautionEle = document.querySelector(".use-ticket-value .danger");
-  cautionEle.classList.add("hidden");
+  hiddenEle(cautionEle);
 });
 
 // submit button event
@@ -390,7 +399,6 @@ submitBtn.addEventListener("click", (e) => {
 // handdle submit change
 const handleSubmitChange = (e) => {
   e.preventDefault();
-  const modal = document.querySelector(".modal");
   const useTicketValueEle = document.querySelector(".use-ticket-value");
   const value = document.querySelector(".use-ticket-value #usedValue").value;
   const note = document.querySelector(".use-ticket-value #note").value;
@@ -410,18 +418,19 @@ const handleSubmitChange = (e) => {
         usedTime: getTime(),
         usedValue: 1,
         note: note,
+        user: USER_NAME
       },
     };
   } else {
     if (isNaN(value)) {
       cautionEle.innerHTML = "Nhập đúng số sử dụng";
-      cautionEle.classList.remove("hidden");
+      showEle(cautionEle)
       return;
     }
 
     if (value > TICKET.REMAIN * 1) {
       cautionEle.innerHTML = "Giá trị còn lại không đủ";
-      cautionEle.classList.remove("hidden");
+      showEle(cautionEle)
       return;
     }
 
@@ -435,11 +444,12 @@ const handleSubmitChange = (e) => {
         usedTime: getTime(),
         usedValue: value,
         note: note,
+        user: USER_NAME
       },
     };
   }
 
-  modal.classList.remove("hidden");
+  showEle(modalEle)
   fetch(URL, {
     method: "POST",
     headers: {
@@ -451,10 +461,10 @@ const handleSubmitChange = (e) => {
       return response.json();
     })
     .then((response) => {
-      modal.classList.add("hidden");
+      hiddenEle(modalEle)
       DATA = response.data;
       handleSearchTicket();
-      useTicketValueEle.classList.add("hidden");
+      hiddenEle(useTicketValueEle)
       document.querySelector(".use-ticket-value #usedValue").value = "";
       document.querySelector(".use-ticket-value #note").value = "";
       alert("Cập nhật thành công");
@@ -462,7 +472,7 @@ const handleSubmitChange = (e) => {
     .catch((error) => {
       console.error("Error:", error);
       alert("Cập nhật không thành công, hãy thử lại");
-      modal.classList.add("hidden");
+      hiddenEle(modalEle)
     });
 };
 
@@ -514,7 +524,7 @@ inputList.forEach((input) => {
     if (cautionEle.classList.contains("hidden")) {
       return;
     }
-    cautionEle.classList.add("hidden");
+    hiddenEle(cautionEle);
   });
 });
 
@@ -526,44 +536,57 @@ ticketIDStart.addEventListener('input', ()=>{
 // submit event
 createTicketBtn.addEventListener("click", (e) => {
   e.preventDefault();
-  const modal = document.querySelector(".modal");
 
   // validate input
   var date_regex = /^(0[1-9]|1\d|2\d|3[01])\/(0[1-9]|1[0-2])\/(19|20)\d{2}$/;
   if (!date_regex.test(ticketDate.value)) {
     cautionEle.innerHTML = "Nhập đúng định dạng ngày dd/mm/yyyy";
-    cautionEle.classList.remove("hidden");
+    showEle(cautionEle)
     return;
   }
   if (isNaN(ticketValue.value)) {
     cautionEle.innerHTML = "Giá trị ticket phải là số";
-    cautionEle.classList.remove("hidden");
+    showEle(cautionEle)
     ticketValue.value = "";
     return;
   }
 
   if (DATA.ticketG.map((ticket) => ticket.ticketID).includes(ticketID.value)) {
     cautionEle.innerHTML = "Ticket ID đã tồn tại";
-    cautionEle.classList.remove("hidden");
+    showEle(cautionEle)
     return;
   }
-  if (
-    DATA.ticketL.map((ticket) => ticket.ticketID.slice(-ticketIDStart.value.length).toString()).includes(ticketIDStart.value)
-  ) {
-    cautionEle.innerHTML = "Ticket ID đã tồn tại";
-    cautionEle.classList.remove("hidden");
-    return;
-  }
-  if (
-    DATA.ticketL.map((ticket) => ticket.ticketID.slice(-ticketIDEnd.value.length).toString()).includes(ticketIDEnd.value)
-  ) {
-    cautionEle.innerHTML = "Ticket ID đã tồn tại";
-    cautionEle.classList.remove("hidden");
-    return;
-  }
+  // if (
+  //   DATA.ticketL.map((ticket) => ticket.ticketID.slice(-ticketIDStart.value.length).toString()).includes(ticketIDStart.value)
+  // ) {
+  //   cautionEle.innerHTML = "Ticket ID đã tồn tại";
+  //   showEle(cautionEle)
+  //   return;
+  // }
+
+  // if (
+  //   DATA.ticketL.map((ticket) => ticket.ticketID.slice(-ticketIDEnd.value.length).toString()).includes(ticketIDEnd.value)
+  // ) {
+  //   cautionEle.innerHTML = "Ticket ID đã tồn tại";
+  //   showEle(cautionEle)
+  //   return;
+  // }
   if(parseInt(ticketIDEnd) < parseInt(ticketIDStart)){
     cautionEle.innerHTML = "Số ticket sau phải lớn hơn hoặc bằng";
-    cautionEle.classList.remove("hidden");
+    showEle(cautionEle)
+    return;
+  }
+
+  var listNewTicket = [];
+  for (var i = ticketIDStart.value*1; i <= ticketIDEnd.value*1; i++) {
+      listNewTicket.push(i);
+  }
+
+  if(
+    DATA.ticketL.find((ticket)=> listNewTicket.includes(ticket.ticketID.slice(-ticketIDStart.value.length)*1))
+  ){
+    cautionEle.innerHTML = "Ticket ID đã tồn tại";
+    showEle(cautionEle)
     return;
   }
 
@@ -574,7 +597,7 @@ createTicketBtn.addEventListener("click", (e) => {
       ticketDate.value === ""
     ) {
       cautionEle.innerHTML = "Nhập đủ thông tin trước khi tạo ticket";
-      cautionEle.classList.remove("hidden");
+      showEle(cautionEle)
       return;
     }
   } else {
@@ -586,7 +609,7 @@ createTicketBtn.addEventListener("click", (e) => {
       ticketDate.value === ""
     ) {
       cautionEle.innerHTML = "Nhập đủ thông tin trước khi tạo ticket";
-      cautionEle.classList.remove("hidden");
+      showEle(cautionEle)
       return;
     }
   }
@@ -623,7 +646,7 @@ createTicketBtn.addEventListener("click", (e) => {
     };
   }
 
-  modal.classList.remove("hidden");
+  showEle(modalEle);
   fetch(URL, {
     method: "POST",
     headers: {
@@ -635,14 +658,14 @@ createTicketBtn.addEventListener("click", (e) => {
       return response.json();
     })
     .then((data) => {
-      modal.classList.add("hidden");
+      hiddenEle(modalEle)
       handleSubmitNew(data);
       alert("Cập nhật thành công");
     })
     .catch((error) => {
       console.error("Error:", error);
       alert("Cập nhật không thành công, hãy thử lại");
-      modal.classList.add("hidden");
+      hiddenEle(modalEle)
 
     });
 });

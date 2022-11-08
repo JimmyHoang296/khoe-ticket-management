@@ -5,6 +5,10 @@
     <title>ticket Khỏe massage</title>
     <meta charset="UTF-8" />
     <link rel="stylesheet" href="./style.css">
+    <script
+    src="https://kit.fontawesome.com/f4a1fb286d.js"
+    crossorigin="anonymous"
+  ></script>
 </head>
 
 <body>
@@ -13,7 +17,9 @@
             <img src="https://sp-ao.shortpixel.ai/client/to_webp,q_glossy,ret_img,w_350,h_132/https://khoemassage.com/wp-content/uploads/2021/07/logo.jpg"
                 alt="" class="logo" />
 
-            <div class="page-selector hidden">
+
+                <div class="page-selector hidden">
+                <div class="siteName"></div>
                 <button class="search-ticket-selector">Tìm ticket</button>
                 <button class="create-ticket-selector">Tạo ticket</button>
             </div>
@@ -22,8 +28,14 @@
         <!-- login -->
         <div class="login-page  ">
             <form class="login-form">
-                <input type="text" placeholder="username" id="user-name"/>
-                <input type="password" placeholder="password" id = "password"/>
+                <input type="text" placeholder="username" id="user-name" />
+                <input type="password" placeholder="password" id="password" />
+                <div class="custom-select">
+                    <select id="user-site">
+                        <option value="K7">K7</option>
+                        <option value="K3">K3</option>
+                    </select>
+                </div>
                 <button id="login">login</button>
                 <p class="danger hidden"></p>
                 <p class="waiting hidden">Đang lấy dữ liệu</p>
@@ -31,17 +43,17 @@
         </div>
         <!-- search ticket -->
         <div class="search-ticket section hidden ">
-            <form class="search-form" onsubmit = "return handleSearchticket()">
+            <form class="search-form" onsubmit="return handleSearchticket()">
                 <div>
-                    <input type="text" id = "searchPhone" placeholder="Nhập số ĐT KH" />
-                    <input type="text" id = "searchName" placeholder="Nhập tên KH" />
-                    <input type="text" id = "searchTicketID" placeholder="Nhập mã ticket" />
+                    <input type="text" id="searchPhone" placeholder="Nhập số ĐT KH" />
+                    <input type="text" id="searchName" placeholder="Nhập tên KH" />
+                    <input type="text" id="searchTicketID" placeholder="Nhập mã ticket" />
                     <button>Tìm kiếm</button>
                 </div>
-                <div class = "option">
-                    <input type="checkbox" id = "isSingleTicket">
+                <div class="option">
+                    <input type="checkbox" id="isSingleTicket">
                     <label for="isSingleTicket">Tìm ticket lẻ</label>
-                    <input type="checkbox" id = "isOD">
+                    <input type="checkbox" id="isOD">
                     <label for="isOD">Tìm ticket đã hết hạn</label>
                 </div>
             </form>
@@ -51,7 +63,7 @@
 
         <!-- start use ticket -->
         <div class="use-ticket-value hidden">
-            <form  onsubmit = "return handleSubmitChange(e)">
+            <form onsubmit="return handleSubmitChange(e)">
                 <input type="text" id="usedValue" class="use-value" placeholder="Giá trị sử dụng">
                 <input type="text" id="note" class="use-value" placeholder="Ghi chú nếu có">
                 <div>
@@ -64,10 +76,10 @@
         <!-- end use ticket -->
 
         <!-- create ticket -->
-        <div class="create-ticket section hidden " >
+        <div class="create-ticket section hidden ">
             <form action="" class="ticket-infor-form">
-                <div class = "option">
-                    <input type="checkbox" id = "isCreateSingleTicket">
+                <div class="option">
+                    <input type="checkbox" id="isCreateSingleTicket">
                     <label for="isCreateSingleTicket">Tạo ticket lẻ</label>
                 </div>
                 <div class="ticket-id-start hidden">
@@ -96,17 +108,22 @@
                 </div>
                 <div class="ticket-date">
                     <label for="ticket-date">Hạn ticket: </label>
-                    <input id="ticket-date" value="" placeholder="dd/mm/yyyy"/>
+                    <input id="ticket-date" value="" placeholder="dd/mm/yyyy" />
                 </div>
                 <button class="" id="create-ticket">Tạo ticket</button>
                 <p class="danger hidden">Nhập đúng số</p>
-                
+
             </form>
         </div>
         <!-- end of create ticket -->
 
     </div>
-    <div class="modal hidden"></div>
+    <!-- start modal -->
+    <div class="modal hidden">
+        <i class="fas fa-spinner fa-pulse"></i>
+    </div>
+
+    <!-- end modal -->
     <script src="script.js"></script>
 </body>
 
